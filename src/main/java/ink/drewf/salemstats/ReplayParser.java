@@ -21,6 +21,7 @@ public class ReplayParser
 
         for (Element element : elements)
         {
+            // Chat messages
             if(element.text().startsWith(":"))
             {
                 // If the message is styled that means we're dead
