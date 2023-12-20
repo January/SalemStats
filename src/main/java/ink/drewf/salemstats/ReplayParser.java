@@ -19,6 +19,8 @@ public class ReplayParser
         // Convert spaces to dashes in line with replay classes
         String playerName = pNameRaw.replace(" ", "-");
 
+        // TODO: Mark days!
+
         // Get messages from when the player was alive
         Elements content = doc.getElementsByClass(playerName);
         List<String> messages = new ArrayList<String>();
@@ -26,7 +28,22 @@ public class ReplayParser
         {
             String number = tc.previousElementSibling().text();
             String messageText = tc.nextElementSibling().text();
-            messages.add(number + " " + playerName + messageText);
+            messages.add(number + " " + pNameRaw + messageText);
+        }
+
+        // Get messages from when the player was dead
+        // Doing this after alive messages is OK because old ret doesn't exist anymore, so there's no circumstance where
+        // one can become alive again after dying
+        Elements deadMessages = doc.select("[style*='color:#689194']");
+        for(Element tc : deadMessages)
+        {
+            String text = tc.text();
+            if(!text.startsWith(":") && !text.startsWith("[") && text.contains(playerName))
+            {
+                String number = tc.parent().previousElementSibling().text();
+                String messageText = tc.nextElementSibling().text();
+                messages.add(number + " (Dead) " + pNameRaw + messageText);
+            }
         }
 
         return messages;

@@ -40,6 +40,6 @@ public class GuiController
             messageString.append(m).append("\n");
         }
 
-        chatText.setText(messageString.toString());
+        chatText.setText(messageString.toString().trim());
     }
 }
