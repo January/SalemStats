@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Main-Class: ink.drewf.salemstats.Main
+Class-Path: javafx-fxml-20.0.1-win.jar javafx-graphics-20.0.1-win.jar ja
+ vafx-base-20.0.1.jar javafx-fxml-20.0.1.jar javafx-graphics-20.0.1.jar 
+ javafx-base-20.0.1-win.jar javafx-controls-20.0.1.jar javafx-controls-2
+ 0.0.1-win.jar
+
