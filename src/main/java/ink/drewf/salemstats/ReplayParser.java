@@ -12,41 +12,37 @@ import org.jsoup.select.Elements;
 
 public class ReplayParser
 {
-    public List<String> parseReplay(File replay, String pNameRaw) throws IOException
+    public List<String> parseReplay(File replay) throws IOException
     {
         Document doc = Jsoup.parse(replay, "UTF-8", "");
+        Elements elements = doc.body().select("*");
 
-        // Convert spaces to dashes in line with replay classes
-        String playerName = pNameRaw.replace(" ", "-");
+        List<String> messages = new ArrayList<>();
 
-        // TODO: Mark days!
-
-        // Get messages from when the player was alive
-        Elements content = doc.getElementsByClass(playerName);
-        List<String> messages = new ArrayList<String>();
-        for(Element tc : content)
+        for (Element element : elements)
         {
-            String number = tc.previousElementSibling().text();
-            String messageText = tc.nextElementSibling().text();
-            messages.add(number + " " + pNameRaw + messageText);
-        }
-
-        // Get messages from when the player was dead
-        // Doing this after alive messages is OK because old ret doesn't exist anymore, so there's no circumstance where
-        // one can become alive again after dying
-        Elements deadMessages = doc.select("[style*='color:#689194']");
-        for(Element tc : deadMessages)
-        {
-            String text = tc.text();
-            if(!text.startsWith(":") && !text.startsWith("[") && text.contains(playerName))
+            if(element.text().startsWith(":"))
             {
-                String number = tc.parent().previousElementSibling().text();
-                String messageText = tc.nextElementSibling().text();
-                messages.add(number + " (Dead) " + pNameRaw + messageText);
+                // If the message is styled that means we're dead
+                if(element.hasAttr("style"))
+                {
+                    String number = element.parent().previousElementSibling().text();
+                    // Dead chat names replace spaces with hyphens, undo that
+                    String pNameRaw = element.previousElementSibling().text();
+                    String playerName = pNameRaw.replace("-", " ");
+                    String messageText = element.text();
+                    messages.add(number + " (Dead) " + playerName + messageText);
+                }
+                else
+                {
+                    Element nameElement = element.previousElementSibling();
+                    String playerNum = nameElement.previousElementSibling().text();
+                    String playerName = nameElement.text();
+                    String playerMsg = element.text();
+                    messages.add(playerNum + " " + playerName + playerMsg);
+                }
             }
         }
-
         return messages;
     }
-
 }

@@ -3,7 +3,6 @@ package ink.drewf.salemstats;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextInputDialog;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -25,12 +24,12 @@ public class GuiController
         FileChooser fileChooser = new FileChooser();
         File replay = fileChooser.showOpenDialog(new Stage());
 
-        TextInputDialog getName = new TextInputDialog();
+        /*TextInputDialog getName = new TextInputDialog();
         getName.setHeaderText("What name were you using in that game?");
         getName.showAndWait();
-        String playerName = getName.getEditor().getText();
+        String playerName = getName.getEditor().getText();*/
 
-        List<String> messages = rp.parseReplay(replay, playerName);
+        List<String> messages = rp.parseReplay(replay);
 
         fileName.setText("Loaded file " + replay.getName());
         StringBuilder messageString = new StringBuilder();
@@ -42,4 +41,5 @@ public class GuiController
 
         chatText.setText(messageString.toString().trim());
     }
+
 }

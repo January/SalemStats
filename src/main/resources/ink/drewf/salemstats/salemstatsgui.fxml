@@ -32,5 +32,5 @@
 
     <Label fx:id="fileName" />
     <Button onAction="#loadFile" text="Load file" />
-   <TextArea fx:id="chatText" prefHeight="300.0" prefWidth="450.0" editable="false" />
+   <TextArea fx:id="chatText" prefHeight="400.0" prefWidth="600.0" editable="false" />
 </VBox>
