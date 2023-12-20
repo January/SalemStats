@@ -25,7 +25,8 @@ public class GuiController
         FileChooser fileChooser = new FileChooser();
         File replay = fileChooser.showOpenDialog(new Stage());
 
-        TextInputDialog getName = new TextInputDialog("What name were you using in that game?");
+        TextInputDialog getName = new TextInputDialog();
+        getName.setHeaderText("What name were you using in that game?");
         getName.showAndWait();
         String playerName = getName.getEditor().getText();
 

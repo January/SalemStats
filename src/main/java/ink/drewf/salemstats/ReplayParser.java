@@ -18,6 +18,8 @@ public class ReplayParser
 
         // Convert spaces to dashes in line with replay classes
         String playerName = pNameRaw.replace(" ", "-");
+
+        // Get messages from when the player was alive
         Elements content = doc.getElementsByClass(playerName);
         List<String> messages = new ArrayList<String>();
         for(Element tc : content)
@@ -26,6 +28,7 @@ public class ReplayParser
             String messageText = tc.nextElementSibling().text();
             messages.add(number + " " + playerName + messageText);
         }
+
         return messages;
     }
 
