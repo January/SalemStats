@@ -26,7 +26,8 @@ public class ReplayParser
             if(element.text().endsWith(" -"))
             {
                 String rawString = element.text();
-                String playerNum = rawString.substring(0, rawString.indexOf(']') + 1);
+                String rawNumber = rawString.substring(rawString.indexOf('[') + 1, rawString.indexOf(']'));
+                int playerNum = Integer.parseInt(rawNumber);
                 String playerName = rawString.substring(rawString.indexOf(" ") + 1, rawString.indexOf("-") - 1);
                 String playerRole = element.nextElementSibling().text();
                 String playerUsername = "";
@@ -39,7 +40,8 @@ public class ReplayParser
                         break;
                     }
                 }
-                messages.add(playerNum + " " + playerName + " (" + playerUsername + ") -- " + playerRole);
+                messages.add("[" + playerNum + "] " + playerName + " (" + playerUsername + ") -- " + playerRole);
+                GuiController.addPlayer(new Player(playerNum, playerName, playerUsername, playerRole));
             }
 
             // Day/night headers

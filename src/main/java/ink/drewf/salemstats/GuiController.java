@@ -1,9 +1,10 @@
 package ink.drewf.salemstats;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -19,8 +20,30 @@ public class GuiController
 {
     @FXML
     private Label fileName;
+    @FXML
     public TextArea chatText;
+    @FXML
+    private TableView<Player> gameTable;
+    @FXML
+    private TableColumn<Player, Integer> numberColumn;
+    @FXML
+    private TableColumn<Player, String> nameColumn;
+    @FXML
+    private TableColumn<Player, String> roleColumn;
+    @FXML
+    private TableColumn<Player, String> factionColumn;
+    @FXML
+    private TableColumn<Player, String> subfactionColumn;
+    @FXML
+    private TableColumn<Player, String> usernameColumn;
+
     private final ReplayParser rp = new ReplayParser();
+    private static final ObservableList<Player> playerList = FXCollections.observableArrayList();
+
+    public static void addPlayer(Player p)
+    {
+        playerList.add(p);
+    }
 
     @FXML
     protected void loadFile() throws IOException
@@ -44,6 +67,15 @@ public class GuiController
         else
         {
             List<String> messages = rp.parseReplay(replay);
+
+            numberColumn.setCellValueFactory(new PropertyValueFactory<>("Number"));
+            nameColumn.setCellValueFactory(new PropertyValueFactory<>("Name"));
+            roleColumn.setCellValueFactory(new PropertyValueFactory<>("Role"));
+            factionColumn.setCellValueFactory(new PropertyValueFactory<>("Faction"));
+            subfactionColumn.setCellValueFactory(new PropertyValueFactory<>("Subfaction"));
+            usernameColumn.setCellValueFactory(new PropertyValueFactory<>("Username"));
+
+            gameTable.setItems(playerList);
 
             fileName.setText("Loaded file " + replay.getName());
             StringBuilder messageString = new StringBuilder();
