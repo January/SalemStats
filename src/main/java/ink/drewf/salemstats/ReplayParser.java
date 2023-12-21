@@ -19,7 +19,6 @@ public class ReplayParser
 
         List<String> messages = new ArrayList<>();
 
-        messages.add("Players in this game: ");
         for (Element element : elements)
         {
             // Player data
