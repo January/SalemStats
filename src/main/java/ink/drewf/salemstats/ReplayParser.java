@@ -42,6 +42,29 @@ public class ReplayParser
                 messages.add(playerNum + " " + playerName + " (" + playerUsername + ") -- " + playerRole);
             }
 
+            // Day/night headers
+            // These aren't always logged. Not sure why.
+            if(element.text().startsWith("Day") || element.text().startsWith("Night"))
+            {
+                String rawString = element.text();
+                if(rawString.startsWith("Day"))
+                {
+                    String dayNum = rawString.substring(rawString.indexOf(" "));
+                    // Separate player data from chatlogs
+                    if(dayNum.equals(" 1"))
+                    {
+                        messages.add("========================================");
+                    }
+                    messages.add("DAY" + dayNum);
+                }
+                if(rawString.startsWith("Night"))
+                {
+                    String nightNum = rawString.substring(rawString.indexOf(" "));
+                    messages.add("NIGHT" + nightNum);
+                }
+                messages.add("---------------------------");
+            }
+
             // Chat messages
             if(element.text().startsWith(":"))
             {
