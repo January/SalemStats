@@ -19,8 +19,29 @@ public class ReplayParser
 
         List<String> messages = new ArrayList<>();
 
+        messages.add("Players in this game: ");
         for (Element element : elements)
         {
+            // Player data
+            if(element.text().endsWith(" -"))
+            {
+                String rawString = element.text();
+                String playerNum = rawString.substring(0, rawString.indexOf(']') + 1);
+                String playerName = rawString.substring(rawString.indexOf(" ") + 1, rawString.indexOf("-") - 1);
+                String playerRole = element.nextElementSibling().text();
+                String playerUsername = "";
+                for(Element elem : element.nextElementSiblings())
+                {
+                    if(elem.text().startsWith("(Username: "))
+                    {
+                        String rawUsername = elem.text();
+                        playerUsername = rawUsername.substring(rawUsername.indexOf(":") + 2, rawUsername.indexOf(")"));
+                        break;
+                    }
+                }
+                messages.add(playerNum + " " + playerName + " (" + playerUsername + ") -- " + playerRole);
+            }
+
             // Chat messages
             if(element.text().startsWith(":"))
             {
