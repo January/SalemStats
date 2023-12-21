@@ -32,7 +32,7 @@ public class ReplayParser
                 String playerUsername = "";
                 for(Element elem : element.nextElementSiblings())
                 {
-                    if(elem.text().startsWith("(Username: "))
+                    if(elem.text().contains("(Username: "))
                     {
                         String rawUsername = elem.text();
                         playerUsername = rawUsername.substring(rawUsername.indexOf(":") + 2, rawUsername.indexOf(")"));
@@ -63,6 +63,18 @@ public class ReplayParser
                     messages.add("NIGHT" + nightNum);
                 }
                 messages.add("---------------------------");
+            }
+
+            // Status messages
+            // Surely there's a better way of doing this. Just need to figure it out
+            if(element.attributes().toString().contains("background-color"))
+            {
+                String rawText = element.text();
+                if(!rawText.contains("very easy to modify") && !rawText.contains("TubaAntics and Curtis")
+                        && !rawText.equals("PLAYER INFO") && !rawText.matches("(Day|Night) [0-9]+"))
+                {
+                    messages.add(rawText);
+                }
             }
 
             // Chat messages
