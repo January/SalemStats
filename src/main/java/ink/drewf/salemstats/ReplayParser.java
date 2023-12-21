@@ -40,7 +40,6 @@ public class ReplayParser
                         break;
                     }
                 }
-                messages.add("[" + playerNum + "] " + playerName + " (" + playerUsername + ") -- " + playerRole);
                 GuiController.addPlayer(new Player(playerNum, playerName, playerUsername, playerRole));
             }
 
@@ -52,11 +51,6 @@ public class ReplayParser
                 if(rawString.startsWith("Day"))
                 {
                     String dayNum = rawString.substring(rawString.indexOf(" "));
-                    // Separate player data from chatlogs
-                    if(dayNum.equals(" 1"))
-                    {
-                        messages.add("========================================");
-                    }
                     messages.add("DAY" + dayNum);
                 }
                 if(rawString.startsWith("Night"))
