@@ -52,15 +52,14 @@ public class ReplayParser
                 {
                     // Day/night headers
                     // These aren't always logged. Not sure why.
-                    String rawString = element.text();
-                    if(rawString.startsWith("Day"))
+                    if(rawText.startsWith("Day"))
                     {
-                        String dayNum = rawString.substring(rawString.indexOf(" "));
+                        String dayNum = rawText.substring(rawText.indexOf(" "));
                         messages.add("DAY" + dayNum);
                     }
-                    if(rawString.startsWith("Night"))
+                    if(rawText.startsWith("Night"))
                     {
-                        String nightNum = rawString.substring(rawString.indexOf(" "));
+                        String nightNum = rawText.substring(rawText.indexOf(" "));
                         messages.add("NIGHT" + nightNum);
                     }
                     messages.add("---------------------------");
