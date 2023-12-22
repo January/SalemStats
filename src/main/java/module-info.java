@@ -6,4 +6,6 @@ module ink.drewf.salemstats {
 
     opens ink.drewf.salemstats to javafx.fxml;
     exports ink.drewf.salemstats;
+    exports ink.drewf.salemstats.game;
+    opens ink.drewf.salemstats.game to javafx.fxml;
 }

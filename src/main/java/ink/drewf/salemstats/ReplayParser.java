@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import ink.drewf.salemstats.game.Player;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -22,7 +23,7 @@ public class ReplayParser
         for (Element element : elements)
         {
             // Player data
-            if(element.text().endsWith(" -"))
+            if(element.text().endsWith(" -") && element.text().startsWith("["))
             {
                 String rawString = element.text();
                 String rawNumber = rawString.substring(rawString.indexOf('[') + 1, rawString.indexOf(']'));
@@ -42,31 +43,30 @@ public class ReplayParser
                 GuiController.addPlayer(new Player(playerNum, playerName, playerUsername, playerRole));
             }
 
-            // Day/night headers
-            // These aren't always logged. Not sure why.
-            if(element.text().startsWith("Day") || element.text().startsWith("Night"))
-            {
-                String rawString = element.text();
-                if(rawString.startsWith("Day"))
-                {
-                    String dayNum = rawString.substring(rawString.indexOf(" "));
-                    messages.add("DAY" + dayNum);
-                }
-                if(rawString.startsWith("Night"))
-                {
-                    String nightNum = rawString.substring(rawString.indexOf(" "));
-                    messages.add("NIGHT" + nightNum);
-                }
-                messages.add("---------------------------");
-            }
-
             // Status messages
             // Surely there's a better way of doing this. Just need to figure it out
             if(element.attributes().toString().contains("background-color"))
             {
                 String rawText = element.text();
-                if(!rawText.contains("very easy to modify") && !rawText.contains("TubaAntics and Curtis")
-                        && !rawText.equals("PLAYER INFO") && !rawText.matches("(Day|Night) [0-9]+"))
+                if(rawText.matches("(Day|Night) [0-9]+"))
+                {
+                    // Day/night headers
+                    // These aren't always logged. Not sure why.
+                    String rawString = element.text();
+                    if(rawString.startsWith("Day"))
+                    {
+                        String dayNum = rawString.substring(rawString.indexOf(" "));
+                        messages.add("DAY" + dayNum);
+                    }
+                    if(rawString.startsWith("Night"))
+                    {
+                        String nightNum = rawString.substring(rawString.indexOf(" "));
+                        messages.add("NIGHT" + nightNum);
+                    }
+                    messages.add("---------------------------");
+                }
+                else if(!rawText.contains("very easy to modify") && !rawText.contains("TubaAntics and Curtis")
+                        && !rawText.equals("PLAYER INFO"))
                 {
                     messages.add(rawText);
                 }

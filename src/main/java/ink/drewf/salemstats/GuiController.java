@@ -1,5 +1,7 @@
 package ink.drewf.salemstats;
 
+import ink.drewf.salemstats.game.Death;
+import ink.drewf.salemstats.game.Player;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -22,6 +24,8 @@ public class GuiController
     private Label fileName;
     @FXML
     public TextArea chatText;
+
+    // Players table
     @FXML
     private TableView<Player> gameTable;
     @FXML
@@ -36,6 +40,16 @@ public class GuiController
     private TableColumn<Player, String> subfactionColumn;
     @FXML
     private TableColumn<Player, String> usernameColumn;
+
+    // Deaths table
+    @FXML
+    private TableView<Death> deathTable;
+    @FXML
+    private TableColumn<Death, String> deathTimeColumn;
+    @FXML
+    private TableColumn<Death, String> deadPlayerColumn;
+    @FXML
+    private TableColumn<Death, String> killerColumn;
 
     private final ReplayParser rp = new ReplayParser();
     private static final ObservableList<Player> playerList = FXCollections.observableArrayList();
@@ -66,6 +80,7 @@ public class GuiController
         }
         else
         {
+            playerList.clear();
             List<String> messages = rp.parseReplay(replay);
 
             numberColumn.setCellValueFactory(new PropertyValueFactory<>("Number"));

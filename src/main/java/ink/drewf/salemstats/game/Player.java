@@ -1,4 +1,4 @@
-package ink.drewf.salemstats;
+package ink.drewf.salemstats.game;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
