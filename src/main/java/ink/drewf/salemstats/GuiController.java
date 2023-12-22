@@ -53,10 +53,16 @@ public class GuiController
 
     private final ReplayParser rp = new ReplayParser();
     private static final ObservableList<Player> playerList = FXCollections.observableArrayList();
+    private static final ObservableList<Death> deathList = FXCollections.observableArrayList();
 
     public static void addPlayer(Player p)
     {
         playerList.add(p);
+    }
+
+    public static void addDeath(Death d)
+    {
+        deathList.add(d);
     }
 
     @FXML
@@ -72,7 +78,7 @@ public class GuiController
 
         // Check to ensure we're loading a valid log file
         String content = Files.readString(Path.of(replay.getAbsolutePath()), StandardCharsets.ISO_8859_1);
-        if(!content.contains("TubaAntics and Curtis"))
+        if(!content.contains("GameLogs mod by TubaAntics"))
         {
             Alert warning = new Alert(Alert.AlertType.WARNING);
             warning.setHeaderText("That's not a proper game log. Try again?");
@@ -81,6 +87,7 @@ public class GuiController
         else
         {
             playerList.clear();
+            deathList.clear();
             List<String> messages = rp.parseReplay(replay);
 
             numberColumn.setCellValueFactory(new PropertyValueFactory<>("Number"));
@@ -90,7 +97,12 @@ public class GuiController
             subfactionColumn.setCellValueFactory(new PropertyValueFactory<>("Subfaction"));
             usernameColumn.setCellValueFactory(new PropertyValueFactory<>("Username"));
 
+            deathTimeColumn.setCellValueFactory(new PropertyValueFactory<>("Time"));
+            deadPlayerColumn.setCellValueFactory(new PropertyValueFactory<>("Name"));
+            killerColumn.setCellValueFactory(new PropertyValueFactory<>("Cause"));
+
             gameTable.setItems(playerList);
+            deathTable.setItems(deathList);
 
             fileName.setText("Loaded file " + replay.getName());
             StringBuilder messageString = new StringBuilder();

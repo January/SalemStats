@@ -1,18 +1,24 @@
 package ink.drewf.salemstats.game;
 
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+
+import java.util.List;
 
 public class Death
 {
     private final SimpleStringProperty time;
     private final SimpleStringProperty name;
-    private final SimpleStringProperty cause;
-    public Death(String time, String name, String cause)
+    private SimpleStringProperty cause = new SimpleStringProperty("");
+    public Death(String time, String name, List<String> causes)
     {
         this.time = new SimpleStringProperty(time);
         this.name = new SimpleStringProperty(name);
-        this.cause = new SimpleStringProperty(cause);
+        cause = new SimpleStringProperty(causesString(causes));
+    }
+
+    private String causesString(List<String> cause)
+    {
+        return String.join(", ", cause);
     }
 
     public String getTime()
