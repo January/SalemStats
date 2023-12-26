@@ -82,7 +82,7 @@ public class ReplayParser
                     String eventType = "";
 
                     // Major events
-                    if(rawText.endsWith("They must be a Ritualist!"))
+                    if(rawText.endsWith(", but it backfired! They must be a"))
                         eventType = "Ritualist guessed wrong";
                     else if(rawText.endsWith(", Destroyer of Worlds and Horseman of the Apocalypse!"))
                         eventType = "Death transformation";
@@ -95,7 +95,8 @@ public class ReplayParser
 
                     if(!eventType.isEmpty())
                     {
-                        GuiController.addEvent(new Event(currentPhase.get(currentPhase.size() - 1), eventType));
+                        int lastDay = currentPhase.size() - 1;
+                        GuiController.addEvent(new Event(currentPhase.get(lastDay), eventType));
                     }
 
                     // Deaths
@@ -112,7 +113,7 @@ public class ReplayParser
                             }
                             deadPlayer = rawText.substring(0, rawText.indexOf(" died last night."));
                         }
-                        else if(rawText.contains("has accomplished their goal as"))
+                        else if(rawText.contains("has accomplished their goal as Pirate"))
                         {
                             if(!currentPhase.get(deathPhase).equals("Unknown"))
                             {
@@ -120,6 +121,19 @@ public class ReplayParser
                             }
                             deadPlayer = rawText.substring(0, rawText.indexOf(" has accomplished their goal as"));
                             GuiController.addDeath(new Death(currentPhase.get(deathPhase), deadPlayer, List.of("Won & left town")));
+                            GuiController.addEvent(new Event(currentPhase.get(deathPhase), "Pirate win"));
+                        }
+                        else if(rawText.contains("has accomplished their goal as Executioner"))
+                        {
+                            deadPlayer = rawText.substring(0, rawText.indexOf(" has accomplished their goal as"));
+                            GuiController.addDeath(new Death(currentPhase.get(deathPhase), deadPlayer, List.of("Won & left town")));
+                            GuiController.addEvent(new Event(currentPhase.get(deathPhase), "Executioner win"));
+                        }
+                        else if(rawText.contains("has accomplished their goal as Doomsayer"))
+                        {
+                            deadPlayer = rawText.substring(0, rawText.indexOf(" has accomplished their goal as"));
+                            GuiController.addDeath(new Death(currentPhase.get(deathPhase), deadPlayer, List.of("Won & left town")));
+                            GuiController.addEvent(new Event(currentPhase.get(deathPhase), "Doomsayer win"));
                         }
                         else
                         {
