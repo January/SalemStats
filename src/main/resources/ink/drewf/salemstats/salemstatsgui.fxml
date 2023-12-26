@@ -67,6 +67,17 @@
                <TableColumn fx:id="killerColumn" prefWidth="182.0" text="Cause" />
            </columns>
          </TableView>
+          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Events">
+              <font>
+                  <Font size="18.0" />
+              </font>
+          </Text>
+          <TableView fx:id="eventTable" prefHeight="200.0" prefWidth="200.0">
+              <columns>
+                  <TableColumn fx:id="eventTimeColumn" prefWidth="75.0" text="Time" />
+                  <TableColumn fx:id="eventTypeColumn" prefWidth="145.0" text="Event" />
+              </columns>
+          </TableView>
       </children>
       <padding>
          <Insets right="5.0" />

@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import ink.drewf.salemstats.game.Death;
+import ink.drewf.salemstats.game.Event;
 import ink.drewf.salemstats.game.Player;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -57,7 +58,7 @@ public class ReplayParser
                 String rawText = element.text();
 
                 // Day/night headers
-                // These aren't always logged. Not sure why.
+                // These aren't always logged by the gamelogs mod. Not sure why.
                 if(rawText.matches("(Day|Night) [0-9]+"))
                 {
                     if(rawText.startsWith("Day"))
@@ -78,6 +79,25 @@ public class ReplayParser
                 }
                 else if(!rawText.contains("very easy to modify") && !rawText.contains("TubaAntics and Curtis") && !rawText.equals("PLAYER INFO"))
                 {
+                    String eventType = "";
+
+                    // Major events
+                    if(rawText.endsWith("They must be a Ritualist!"))
+                        eventType = "Ritualist guessed wrong";
+                    else if(rawText.endsWith(", Destroyer of Worlds and Horseman of the Apocalypse!"))
+                        eventType = "Death transformation";
+                    else if(rawText.endsWith("A famine has begun!"))
+                        eventType = "Famine transformation";
+                    else if(rawText.startsWith("A Plague has consumed the Town,"))
+                        eventType = "Pestilence transformation";
+                    else if(rawText.endsWith("Cry 'Havoc!', and let slip the dogs of war."))
+                        eventType = "War transformation";
+
+                    if(!eventType.isEmpty())
+                    {
+                        GuiController.addEvent(new Event(currentPhase.get(currentPhase.size() - 1), eventType));
+                    }
+
                     // Deaths
                     if(rawText.contains("died last night.") || rawText.contains("died today.") || rawText.contains("has accomplished their goal as") )
                     {

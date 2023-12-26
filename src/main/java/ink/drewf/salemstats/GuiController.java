@@ -1,6 +1,7 @@
 package ink.drewf.salemstats;
 
 import ink.drewf.salemstats.game.Death;
+import ink.drewf.salemstats.game.Event;
 import ink.drewf.salemstats.game.Player;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -51,9 +52,18 @@ public class GuiController
     @FXML
     private TableColumn<Death, String> killerColumn;
 
+    // Events table
+    @FXML
+    private TableView<Event> eventTable;
+    @FXML
+    private TableColumn<Event, String> eventTimeColumn;
+    @FXML
+    private TableColumn<Event, String> eventTypeColumn;
+
     private final ReplayParser rp = new ReplayParser();
     private static final ObservableList<Player> playerList = FXCollections.observableArrayList();
     private static final ObservableList<Death> deathList = FXCollections.observableArrayList();
+    private static final ObservableList<Event> eventList = FXCollections.observableArrayList();
 
     public static void addPlayer(Player p)
     {
@@ -64,6 +74,12 @@ public class GuiController
     {
         deathList.add(d);
     }
+    public static void addEvent(Event e)
+    {
+        eventList.add(e);
+    }
+
+
 
     @FXML
     protected void loadFile() throws IOException
@@ -96,13 +112,16 @@ public class GuiController
             factionColumn.setCellValueFactory(new PropertyValueFactory<>("Faction"));
             subfactionColumn.setCellValueFactory(new PropertyValueFactory<>("Subfaction"));
             usernameColumn.setCellValueFactory(new PropertyValueFactory<>("Username"));
+            gameTable.setItems(playerList);
 
             deathTimeColumn.setCellValueFactory(new PropertyValueFactory<>("Time"));
             deadPlayerColumn.setCellValueFactory(new PropertyValueFactory<>("Name"));
             killerColumn.setCellValueFactory(new PropertyValueFactory<>("Cause"));
-
-            gameTable.setItems(playerList);
             deathTable.setItems(deathList);
+
+            eventTimeColumn.setCellValueFactory(new PropertyValueFactory<>("Time"));
+            eventTypeColumn.setCellValueFactory(new PropertyValueFactory<>("Event"));
+            eventTable.setItems(eventList);
 
             fileName.setText("Loaded file " + replay.getName());
             StringBuilder messageString = new StringBuilder();
